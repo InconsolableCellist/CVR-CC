@@ -48,6 +48,9 @@
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
+        <Reference Include="UnityEngine.CoreModule">
+          <HintPath>$(CVRPath)/ChilloutVR_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="CVR_CC.cs" />
