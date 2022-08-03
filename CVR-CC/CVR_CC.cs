@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using ABI.CCK.Components;
 using Harmony;
 using MelonLoader;
+using UnityEngine;
 using HarmonyMethod = HarmonyLib.HarmonyMethod;
+using Object = System.Object;
 
 [assembly: MelonGame("Alpha Blend Interactive", "ChilloutVR")]
 [assembly: MelonInfo(typeof(CVR_CC.CVR_CC), "CVR-CC", "0.1", "Foxipso and BenacleJames")]
@@ -12,44 +15,34 @@ namespace CVR_CC
 {
     public class CVR_CC : MelonMod
     {
-        private HarmonyInstance _instance = new HarmonyInstance(Guid.NewGuid().ToString());
-        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
-        {
-            base.OnSceneWasLoaded(buildIndex, sceneName);
-            
-        }
+        public static readonly List<TrackedPlayer> TrackedPlayers = new List<TrackedPlayer>();
+        public static readonly List<Action> MainThreadExecutionQueue = new List<Action>();
+        
 
         public override void OnApplicationStart()
         {
-            MelonLogger.Msg("CVR-CC has been loaded!");
+            MelonLogger.Msg("CVR-CC Starting");
+            Hooks.SetupHooks();
             
-            _instance.Patch(typeof(CVRVideoPlayer).GetMethod(nameof(CVRVideoPlayer.SetVideoUrl)),
-                null,
-                typeof(CVR_CC).GetMethod(nameof(OnSetVideoUrl),
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
-                    .ToNewHarmonyMethod());
-            
-            MelonLogger.Msg("Patching complete");
             base.OnApplicationStart();
         }
-
-        private static void OnSetVideoUrl(String url, bool broadcast, string objPath, string username, bool isPaused) { 
-            MelonLogger.Msg("OnSetVideoUrl called");
-            MelonLogger.Msg("URL set to: " + url);
-            MelonLogger.Msg("Broadcast: " + broadcast);
-            MelonLogger.Msg("ObjPath: " + objPath);
-            MelonLogger.Msg("Username: " + username);
-            MelonLogger.Msg("IsPaused: " + isPaused);
+        
+        public override void OnSceneWasInitialized(int buildIndex, string sceneName) {
+            foreach (var lingeringPlayer in TrackedPlayers)
+                lingeringPlayer.Dispose();
+            TrackedPlayers.Clear();
             
+            foreach (var discoveredPlayer in GameObject.FindObjectsOfType<CVRVideoPlayer>()) {
+                MelonLogger.Msg("Discovered CVRVideoPlayer");
+                TrackedPlayers.Add(new TrackedPlayer(discoveredPlayer));
+            }
         }
         
-        public static void OnStartedPlaying() { 
-            MelonLogger.Msg("On Started Playing called");
+        public override void OnUpdate() { 
+            if (MainThreadExecutionQueue.Count <= 0) return;
+            
+            MainThreadExecutionQueue[0].Invoke();
+            MainThreadExecutionQueue.RemoveAt(0);
         }
-        
-        public static void OnStart() { 
-            MelonLogger.Msg("On Start called");
-        }
-
     }
 }

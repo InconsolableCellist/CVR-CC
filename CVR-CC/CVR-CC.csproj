@@ -12,6 +12,7 @@
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <CVRPath Condition="Exists('D:/Games/Steam/steamapps/common/ChilloutVR/')">D:/Games/Steam/steamapps/common/ChilloutVR/</CVRPath>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,14 +48,37 @@
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
+        <Reference Include="System.Net.Http">
+          <HintPath>$(CVRPath)/ChilloutVR_Data/Managed/System.Net.Http.dll</HintPath>
+        </Reference>
         <Reference Include="System.Xml" />
+        <Reference Include="Unity.TextMeshPro">
+          <HintPath>$(CVRPath)/ChilloutVR_Data/Managed/Unity.TextMeshPro.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine.CoreModule">
           <HintPath>$(CVRPath)/ChilloutVR_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.JSONSerializeModule">
+          <HintPath>$(CVRPath)/ChilloutVR_Data/Managed/UnityEngine.JSONSerializeModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+          <HintPath>$(CVRPath)/ChilloutVR_Data/Managed/UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="CVR_CC.cs" />
+        <Compile Include="GenericPlayer.cs" />
+        <Compile Include="Hooks.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="SRTDecoder.cs" />
+        <Compile Include="Subtitle.cs" />
+        <Compile Include="SubtitlesApi.cs" />
+        <Compile Include="Timeline.cs" />
+        <Compile Include="TimelineError.cs" />
+        <Compile Include="TimelineEvent.cs" />
+        <Compile Include="TrackedPlayer.cs" />
+        <Compile Include="UITextArea.cs" />
+        <Compile Include="VideoUri.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
