@@ -53,43 +53,49 @@ namespace CVR_CC {
             MelonLogger.Msg("On Started Playing called");
             var foundPlayer = CVR_CC.TrackedPlayers.Find(player => player.Equals(__instance.gameObject));
             foundPlayer?.OnStateChange(TrackedPlayer.PlayerState.Play);
-            MelonLogger.Msg(foundPlayer != null ? "Found player" : "Did not find player");
+            if (foundPlayer == null) { 
+                MelonLogger.Error("Did not find player");
+            }
         }
         
         private static void OnPlay(CVRVideoPlayer __instance, bool broadcast, string username) { 
             MelonLogger.Msg("On Play called");
             var foundPlayer = CVR_CC.TrackedPlayers.Find(player => player.Equals(__instance.gameObject));
             foundPlayer?.OnStateChange(TrackedPlayer.PlayerState.Play);
-            MelonLogger.Msg(foundPlayer != null ? "Found player" : "Did not find player");
+            if (foundPlayer == null) { 
+                MelonLogger.Error("Did not find player");
+            }
         }
         
         private static void OnPause(CVRVideoPlayer __instance, bool broadcast, string username) { 
             MelonLogger.Msg("On Pause called");
             var foundPlayer = CVR_CC.TrackedPlayers.Find(player => player.Equals(__instance.gameObject));
             foundPlayer?.OnStateChange(TrackedPlayer.PlayerState.Pause);
-            MelonLogger.Msg(foundPlayer != null ? "Found player" : "Did not find player");
+            if (foundPlayer == null) { 
+                MelonLogger.Error("Did not find player");
+            }
         }
         
         private static void OnFinishedPlaying(CVRVideoPlayer __instance) { 
             MelonLogger.Msg("On Finished Playing called");
             var foundPlayer = CVR_CC.TrackedPlayers.Find(player => player.Equals(__instance.gameObject));
             foundPlayer?.OnStateChange(TrackedPlayer.PlayerState.Stop);
-            MelonLogger.Msg(foundPlayer != null ? "Found player" : "Did not find player");
+            if (foundPlayer == null) { 
+                MelonLogger.Error("Did not find player");
+            }
         }
         
         private static void OnSetVideoUrl(CVRVideoPlayer __instance, String url, bool broadcast, string objPath, string username, bool isPaused) { 
             MelonLogger.Msg("OnSetVideoUrl called");
-            MelonLogger.Msg("URL set to: " + url);
-            MelonLogger.Msg("Broadcast: " + broadcast);
-            MelonLogger.Msg("ObjPath: " + objPath);
-            MelonLogger.Msg("Username: " + username);
-            MelonLogger.Msg("IsPaused: " + isPaused);
-            MelonLogger.Msg("instance: " + __instance);
-            
+            MelonLogger.Msg("\tURL set to: " + url);
             var foundPlayer = CVR_CC.TrackedPlayers.Find(player => player.Equals(__instance.gameObject));
             foundPlayer?.OnURLChange(url);
-
-            MelonLogger.Msg(foundPlayer != null ? "Found player" : "Didn't find player");
+            if (foundPlayer == null) { 
+                MelonLogger.Error("Did not find player");
+            }
+            if (!isPaused) { 
+                OnPlay(__instance, broadcast, username);
+            }
         }
     }
 }
