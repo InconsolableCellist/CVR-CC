@@ -11,7 +11,7 @@ namespace CVR_CC {
      * So uh, please don't need this before the UI Manager has finished initializing (though this should be impossible)
      */
     public static class UITextArea {
-        private static readonly TextMeshProUGUI TextComponent;
+        private static readonly Text TextComponent;
         private static readonly Transform TextParent;
 
         public static string Text
@@ -27,23 +27,30 @@ namespace CVR_CC {
         static UITextArea()
         {
             // Hippity Hoppity, your UI elements are now my property
-            var baseUserInterface = GameObject.Find("CohtmlHud").transform;
+            var baseUserInterface = GameObject.Find("SystemLoadingHolder").transform.parent.transform;
             MelonLogger.Msg( baseUserInterface == null ? "Could not find the base user interface" : "Found the base user interface");
             GameObject ui = new GameObject("CVR_CC_UITextArea");
-            ui.transform.SetParent(baseUserInterface);
+            ui.transform.parent = baseUserInterface;
             ui.transform.localScale = Vector3.one;
             ui.transform.localRotation = Quaternion.identity;
             ui.name = "CVR-CC Text";
-            // ui.transform.localPosition = new Vector3(0, -350, 0);
+            ui.transform.localPosition = new Vector3(0, -350, 0);
             TextParent = ui.transform;
             
             // textMeshPro.fontSize = 25; //TODO: Perhaps scale the font size depending on how much text is being rendered
-            
+            /*
             TextMeshProUGUI textMeshPro = null;
            
-            foreach (var obj in Object.FindObjectsOfType<TextMeshProUGUI>()) { 
-                if (obj.name == "SubtitlesText") { 
+            foreach (var obj in (TextMeshProUGUI[]) Resources.FindObjectsOfTypeAll(typeof(TextMeshProUGUI))) {
+                if (obj.name == "Now loading text") {
+                    MelonLogger.Msg("Found directly");
                     textMeshPro = Object.Instantiate(obj, ui.transform);
+                    textMeshPro.name = "CVR-CC Text";
+                    break;
+                } else if (obj.transform.parent.name == "Now loading text") { 
+                    MelonLogger.Msg("Found in parent");
+                    textMeshPro = Object.Instantiate(obj, ui.transform);
+                    textMeshPro.name = "CVR-CC Text";
                     break;
                 }
             }
@@ -54,6 +61,14 @@ namespace CVR_CC {
             }
             MelonLogger.Msg("Successfully set the TextMeshPro text output object");
             TextComponent = textMeshPro;
+            */
+            
+            TextComponent = ui.AddComponent<Text>(); 
+            TextComponent.name = "CVR-CC Text";
+            TextComponent.fontSize = 25;
+            
+            
+            
         }
 
         public static IEnumerator DisplayAlert(string text, float timeInSeconds)
