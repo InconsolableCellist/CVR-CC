@@ -50,7 +50,7 @@ namespace CVR_CC {
             text.margin += new Vector4(0, 0, 0, 200);
             text.faceColor = new Color32(255, 255,0, 255);
             text.outlineColor = new Color32(0, 0, 0, 255);
-            text.outlineWidth = 0.345f;
+            text.outlineWidth = 0.1f;
             TextComponent = text;
             
             
