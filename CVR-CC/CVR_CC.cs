@@ -9,7 +9,7 @@ using HarmonyMethod = HarmonyLib.HarmonyMethod;
 using Object = System.Object;
 
 [assembly: MelonGame("Alpha Blend Interactive", "ChilloutVR")]
-[assembly: MelonInfo(typeof(CVR_CC.CVR_CC), "CVR-CC", "0.9", "Foxipso and BenacleJames")]
+[assembly: MelonInfo(typeof(CVR_CC.CVR_CC), "CVR-CC", "1.0", "Foxipso and BenacleJames")]
 
 namespace CVR_CC 
 {
