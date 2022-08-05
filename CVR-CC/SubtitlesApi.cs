@@ -64,53 +64,40 @@ namespace CVR_CC {
         }
         
         public static async Task<string> FetchSub(string subtitleURL) {
-            MelonLogger.Msg("1-1-1");
             var compressedMs = GetSubIfCached(subtitleURL);
             string srtString = "";
             
             if (compressedMs == null) {
-                MelonLogger.Msg("1-1-2");
                 HttpResponseMessage request = await WebClient.GetAsync(subtitleURL);
-                MelonLogger.Msg("1-1-3");
                 byte[] response = await request.Content.ReadAsByteArrayAsync();
                 try {
-                    MelonLogger.Msg("1-1-4");
                     compressedMs = new MemoryStream(response);
                     CachedSRTs[subtitleURL] = compressedMs;
-                MelonLogger.Msg("1-1-5");
                 } catch (Exception e) {
                     MelonLogger.Error("An exception occurred while trying to fetch or decode a subtitle file! " + e);
                 }
             }
             MelonLogger.Error("CompressedMs is still null.");
-            MelonLogger.Msg("1-1-6");
             if (compressedMs == null) return srtString;
             try {
                 compressedMs.Seek(0,0);
-                MelonLogger.Msg("1-1-7");
                 var decompressedMs = new MemoryStream();
                 var gzs = new BufferedStream(new GZipStream(compressedMs, CompressionMode.Decompress), 
                     BUFFER_SIZE_BYTES);
-                MelonLogger.Msg("1-1-8");
                 gzs.CopyTo(decompressedMs);
                 srtString = Encoding.UTF8.GetString(decompressedMs.ToArray());
-                MelonLogger.Msg("1-1-9");
             } catch (Exception e) { 
                 MelonLogger.Error("An exception occurred while trying to decompress, decode, or verify an " +
                                   "encoded subtitle file! " + e);
             }
             
-            MelonLogger.Msg("1-1-10");
             if (!VerifySrt(srtString)) { 
                 MelonLogger.Error("Retrieved a subtitle file but it doesn't look like a valid SRT.");
                 srtString = "";
             } else {
                 compressedMs.Seek(0,0);
-                MelonLogger.Msg("1-1-11");
                 CachedSRTs[subtitleURL] = compressedMs;
-                MelonLogger.Msg("1-1-12");
             }
-            MelonLogger.Msg("1-1-13");
             return srtString;
         }
 

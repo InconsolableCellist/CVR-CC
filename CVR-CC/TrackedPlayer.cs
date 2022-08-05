@@ -59,6 +59,7 @@ namespace CVR_CC {
         
         public async void OnURLChange(string newURl)
         {
+            MelonLogger.Msg("OnURLChange.");
             var (movieName, timelineEvents) = await FetchSubtitlesForNewUrl(newURl);
             if (timelineEvents == null)
             {

@@ -69,8 +69,8 @@ namespace CVR_CC {
         
         public static void ToggleUI(bool newShownState) { 
             if (TextParent == null) { 
-                // TODO: Whyyy
-                MelonLogger.Msg("somehow textparent is null");
+                // TODO: Whyyy. Gets called each update
+                // MelonLogger.Msg("somehow textparent is null");
                 return;
             }
             TextParent.gameObject.SetActive(newShownState);
