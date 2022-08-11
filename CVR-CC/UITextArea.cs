@@ -26,7 +26,8 @@ namespace CVR_CC {
 
         static UITextArea() {
             // Hippity Hoppity, your UI elements are now my property
-            var baseUserInterface = GameObject.Find("CohtmlHud").transform.parent.transform; 
+            // var baseUserInterface = GameObject.Find("CohtmlHud").transform.parent.transform; 
+            var baseUserInterface = GameObject.Find("[CameraRigDesktop]").transform;
             MelonLogger.Msg( baseUserInterface == null ? "Could not find the base user interface" : "Found the base user interface");
             GameObject ui = new GameObject("CVR_CC Text");
             ui.transform.parent = baseUserInterface;
@@ -40,7 +41,8 @@ namespace CVR_CC {
             ui.AddComponent<CanvasRenderer>();
             Canvas canvas = ui.AddComponent<Canvas>();
             // TODO: can use ScreenSpaceCamera to reduce draw impact when hidden?
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            // canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.renderMode = RenderMode.WorldSpace;
             
             var text = ui.AddComponent<TextMeshProUGUI>();
             text.fontSize = 30;
@@ -51,6 +53,18 @@ namespace CVR_CC {
             text.faceColor = new Color32(255, 255,0, 255);
             text.outlineColor = new Color32(0, 0, 0, 255);
             text.outlineWidth = 0.1f;
+            
+            text.fontSharedMaterial.SetFloat("_Emissive_Color_G", 1);
+            text.fontSharedMaterial.SetFloat("_Emissive_Color_B", 1);
+            text.fontSharedMaterial.SetFloat("_Emissive_Color_R", 1);
+            text.fontSharedMaterial.SetFloat("_Emissive_Color_A", 1);
+            text.fontSharedMaterial.SetFloat("_Emissive_Color_Power", 1);
+            text.fontSharedMaterial.EnableKeyword("_EMISSION");
+            text.fontSharedMaterial.EnableKeyword("_EMISSION_COLOR");
+            text.fontSharedMaterial.EnableKeyword("_EMISSION_TEXTURE");
+            text.fontSharedMaterial.EnableKeyword("_EMISSION_TEXTURE_MASK");
+            text.fontSharedMaterial.EnableKeyword("_EMISSION_TEXTURE_MASK_SOFT");
+            
             TextComponent = text;
             
             
