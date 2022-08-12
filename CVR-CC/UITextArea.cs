@@ -27,7 +27,7 @@ namespace CVR_CC {
         static UITextArea() {
             // Hippity Hoppity, your UI elements are now my property
             // var baseUserInterface = GameObject.Find("CohtmlHud").transform.parent.transform; 
-            var baseUserInterface = GameObject.Find("[CameraRigDesktop]").transform;
+            var baseUserInterface = GameObject.Find("[CameraRigDesktop]").transform.parent.transform;
             MelonLogger.Msg( baseUserInterface == null ? "Could not find the base user interface" : "Found the base user interface");
             GameObject ui = new GameObject("CVR_CC Text");
             ui.transform.parent = baseUserInterface;
@@ -43,6 +43,14 @@ namespace CVR_CC {
             // TODO: can use ScreenSpaceCamera to reduce draw impact when hidden?
             // canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.renderMode = RenderMode.WorldSpace;
+            
+            canvas.GetComponent<Canvas>().worldCamera = Camera.main;
+            canvas.GetComponent<Canvas>().sortingOrder = 1;
+            canvas.GetComponent<Canvas>().sortingLayerName = "UI";
+            canvas.GetComponent<Canvas>().pixelPerfect = true;
+            canvas.GetComponent<Canvas>().planeDistance = 1;
+            canvas.GetComponent<Canvas>().overrideSorting = true;
+            
             
             var text = ui.AddComponent<TextMeshProUGUI>();
             text.fontSize = 30;
@@ -66,6 +74,67 @@ namespace CVR_CC {
             text.fontSharedMaterial.EnableKeyword("_EMISSION_TEXTURE_MASK_SOFT");
             
             TextComponent = text;
+            
+            // add a debug line 1 unit length to the baseUserInterface
+            var debugLine = new GameObject("Debug Line"); 
+            debugLine.transform.parent = baseUserInterface;
+            debugLine.transform.localScale = Vector3.one;
+            debugLine.transform.localRotation = Quaternion.identity;
+            debugLine.transform.position = Vector3.zero;
+            debugLine.transform.localPosition = Vector3.zero;
+            debugLine.AddComponent<CanvasRenderer>();
+            var line = debugLine.AddComponent<LineRenderer>();
+            line.startWidth = 0.1f;
+            line.endWidth = 0.1f;
+            line.startColor = Color.red;
+            line.endColor = Color.red;
+            line.positionCount = 2;
+            line.SetPosition(0, Vector3.zero);
+            line.SetPosition(1, Vector3.forward * 1);
+            
+            // add a GameObject cube 1 unit length to the center of the baseUserInterface
+            var cube = new GameObject("Cube");
+            cube.transform.parent = baseUserInterface;
+            cube.transform.localScale = Vector3.one;
+            cube.transform.localRotation = Quaternion.identity;
+            cube.transform.position = Vector3.zero;
+            cube.transform.localPosition = Vector3.zero;
+            cube.AddComponent<CanvasRenderer>();
+            var mesh = cube.AddComponent<MeshFilter>();
+            mesh.mesh = new Mesh();
+            mesh.mesh.vertices = new Vector3[] {
+                new Vector3(-0.5f, -0.5f, -0.5f),
+                new Vector3(-0.5f, -0.5f, 0.5f),
+                new Vector3(-0.5f, 0.5f, -0.5f),
+                new Vector3(-0.5f, 0.5f, 0.5f),
+                new Vector3(0.5f, -0.5f, -0.5f),
+                new Vector3(0.5f, -0.5f, 0.5f),
+                new Vector3(0.5f, 0.5f, -0.5f),
+                new Vector3(0.5f, 0.5f, 0.5f)
+            };
+            mesh.mesh.triangles = new int[] {
+                0, 1, 2,
+                1, 3, 2,
+                4, 6, 5,
+                5, 6, 7,
+                0, 2, 4,
+                4, 2, 6,
+                1, 5, 3,
+                3, 5, 7,
+                0, 4, 1,
+                1, 4, 5,
+                3, 7, 2,
+                2, 7, 6
+            };
+            mesh.mesh.RecalculateNormals();
+            mesh.mesh.RecalculateBounds();
+            mesh.mesh.RecalculateTangents();
+            // set color of mesh to red
+            var color = new Color32(255, 0, 0, 255);
+            var colors = new Color32[mesh.mesh.vertexCount];
+            for (int i = 0; i < mesh.mesh.vertexCount; i++)
+                colors[i] = color;
+           
             
             
             
