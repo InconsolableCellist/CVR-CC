@@ -27,7 +27,7 @@ namespace CVR_CC {
         static UITextArea() {
             // Hippity Hoppity, your UI elements are now my property
             // var baseUserInterface = GameObject.Find("CohtmlHud").transform.parent.transform; 
-            var baseUserInterface = GameObject.Find("[CameraRigDesktop]").transform.parent.transform;
+            var baseUserInterface = GameObject.Find("[CameraRigDesktop]").transform;
             MelonLogger.Msg( baseUserInterface == null ? "Could not find the base user interface" : "Found the base user interface");
             GameObject ui = new GameObject("CVR_CC Text");
             ui.transform.parent = baseUserInterface;
