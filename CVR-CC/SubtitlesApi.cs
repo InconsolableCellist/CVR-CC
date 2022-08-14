@@ -12,7 +12,7 @@ using UnityEngine;
 namespace CVR_CC {
     public static class SubtitlesApi {
         private static readonly HttpClient WebClient = new HttpClient{DefaultRequestHeaders = {{"User-Agent", 
-            "VRC-CC"}}};
+            "CVR-CC"}}};
         private const int BUFFER_SIZE_BYTES = 1024*1024; // 1MB
         
         private static readonly Dictionary<string, MemoryStream> CachedSRTs = new Dictionary<string, MemoryStream>();
