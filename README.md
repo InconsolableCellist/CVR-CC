@@ -1,18 +1,20 @@
 ﻿# CVR-CC: ChilloutVR Closed Captions for movie worlds
 
-## What is CVR-CC?
+----
+
+## 📺 What is CVR-CC?
 
 CVR-CC hooks into CVRVideoPlayers in [ChilloutVR](https://abinteractive.net) to provide closed captions for movies.
 When a movie is loaded it reads the URL, attempts to extract the movie name, and queries the CVR-CC backend AWS service
 to request an SRT for that movie. In most cases, resonably named movies will result in the SRT being returned.
 The SRT is then parsed and synced to the CVRVideoPlayer, displaying the subtitles on the HUD.
 
-## Requirements
+## 🔧 Requirements
 
 - [MelonLoader](https://github.com/LavaGang/MelonLoader.Installer) or [CVRMelonAssistant](https://github.com/knah/CVRMelonAssistant/) (automated install) for ChilloutVR 
     - Refer to the [CVR Modding Discord](https://discord.gg/xE7AwSrn) for installation help
 
-## Installation
+## 💾 Installation
 
 1. Copy the `CVR_CC.dll` into your ChilloutVR Mods folder (e.g., `C:\Steam\steamapps\common\ChilloutVR\Mods\CVR_CC.dll`).
 2. Join a world with a video player in desktop or VR mode
@@ -20,29 +22,31 @@ The SRT is then parsed and synced to the CVRVideoPlayer, displaying the subtitle
 
 If the movie is found, you should see subtitles appear in yellow text on the bottom of your HUD.
 
-## Troubleshooting
+## ❔ Troubleshooting
 
 If subtitles fail to load, refer to your MelonLoader logs/window to see error messages. Most likely, the URL doesn't contain the movie name.
 If necessary, submit an issue on Github and include all relevant log output. 
 
-## Future Improvements
+MelonLoader logs are located in your `ChilloutVR\MelonLoader\Logs` folder.
+
+## 📈 Future Improvements
 
 - Add support for multiple languages
 - Implement UI for changing the offset for subtitles that are running fast/slow
 - Implement UI for searching for a movie when the search fails
 - Implement UI for toggling CC on/off and/or querying for a movie only when requested
 
-## External Data
+## 🛡️ External Data
 
 For the mod to function, it sends the URLs of CVRVideoPlayers in worlds that you join to a caching server on AWS to grab the SRTs.
 The mod's request contains your IP address and the URL you're attempting to access, which go into a normal HTTP log and are periodically purged.
  
-## Authors
+## 🦊🐕 Authors
 
 - Foxipso
 - BenacleJames
 
-## License
+## 🧾 License
 
 ```
 Copyright (c) 2022 
