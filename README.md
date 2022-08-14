@@ -28,8 +28,14 @@ If necessary, submit an issue on Github and include all relevant log output.
 ## Future Improvements
 
 - Add support for multiple languages
-- Implement a UI for changing the offset for subtitles that are running fast/slow
-- Implement a UI for searching for a movie when the search fails
+- Implement UI for changing the offset for subtitles that are running fast/slow
+- Implement UI for searching for a movie when the search fails
+- Implement UI for toggling CC on/off and/or querying for a movie only when requested
+
+## External Data
+
+For the mod to function, it sends the URLs of CVRVideoPlayers in worlds that you join to a caching server on AWS to grab the SRTs.
+The mod's request contains your IP address and the URL you're attempting to access, which go into a normal HTTP log and are periodically purged.
  
 ## Authors
 
